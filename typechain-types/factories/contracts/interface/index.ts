@@ -2,3 +2,4 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as iSimpleSwapSol from "./ISimpleSwap.sol";
+export { IUniswapV2Pair__factory } from "./IUniswapV2Pair__factory";

@@ -21,3 +21,5 @@ npm run build
 npm run test
 ```
 
+## 筆記：
+- UniswapV2Factory 賞析： https://learnblockchain.cn/article/3775

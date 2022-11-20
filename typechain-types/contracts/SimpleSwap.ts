@@ -43,6 +43,8 @@ export interface SimpleSwapInterface extends utils.Interface {
     "removeLiquidity(uint256)": FunctionFragment;
     "swap(address,address,uint256)": FunctionFragment;
     "symbol()": FunctionFragment;
+    "token0()": FunctionFragment;
+    "token1()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
@@ -64,6 +66,8 @@ export interface SimpleSwapInterface extends utils.Interface {
       | "removeLiquidity"
       | "swap"
       | "symbol"
+      | "token0"
+      | "token1"
       | "totalSupply"
       | "transfer"
       | "transferFrom"
@@ -114,6 +118,8 @@ export interface SimpleSwapInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
+  encodeFunctionData(functionFragment: "token0", values?: undefined): string;
+  encodeFunctionData(functionFragment: "token1", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
@@ -160,6 +166,8 @@ export interface SimpleSwapInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "swap", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "token0", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "token1", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
@@ -343,6 +351,10 @@ export interface SimpleSwap extends BaseContract {
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
+    token0(overrides?: CallOverrides): Promise<[string]>;
+
+    token1(overrides?: CallOverrides): Promise<[string]>;
+
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
@@ -421,6 +433,10 @@ export interface SimpleSwap extends BaseContract {
   ): Promise<ContractTransaction>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
+
+  token0(overrides?: CallOverrides): Promise<string>;
+
+  token1(overrides?: CallOverrides): Promise<string>;
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -508,6 +524,10 @@ export interface SimpleSwap extends BaseContract {
     ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
+
+    token0(overrides?: CallOverrides): Promise<string>;
+
+    token1(overrides?: CallOverrides): Promise<string>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -650,6 +670,10 @@ export interface SimpleSwap extends BaseContract {
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
+    token0(overrides?: CallOverrides): Promise<BigNumber>;
+
+    token1(overrides?: CallOverrides): Promise<BigNumber>;
+
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
@@ -725,6 +749,10 @@ export interface SimpleSwap extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    token0(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    token1(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

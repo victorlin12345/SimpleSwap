@@ -83,7 +83,6 @@ describe("SimpleSwap Spec", () => {
         it("tokenA's address should be less than tokenB's address", async () => {
             const tokenA = (await simpleSwap.getTokenA()).toLowerCase()
             const tokenB = (await simpleSwap.getTokenB()).toLowerCase()
-
             expect(tokenA < tokenB).to.be.eq(true)
         })
     })

@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/victorlin/Desktop/SimpleSwap/contracts/SimpleSwap.sol": {
-      "lastModificationDate": 1668925104363,
-      "contentHash": "f5dba2a18791d5ce06da7feb5c5ac7b2",
+      "lastModificationDate": 1668951142280,
+      "contentHash": "6a8e1dab58d2a60f1e20fae4bab2c3c4",
       "sourceName": "contracts/SimpleSwap.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -32,7 +32,8 @@
       },
       "imports": [
         "./interface/ISimpleSwap.sol",
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "./library/UniswapV2Library.sol"
       ],
       "versionPragmas": [
         "0.8.17"
@@ -270,6 +271,120 @@
       ],
       "artifacts": [
         "TestERC20"
+      ]
+    },
+    "/Users/victorlin/Desktop/SimpleSwap/contracts/interface/IUniswapV2Pair.sol": {
+      "lastModificationDate": 1668949666580,
+      "contentHash": "1d4d8e255a202a54b00503590bd11e30",
+      "sourceName": "contracts/interface/IUniswapV2Pair.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "evmVersion": "berlin",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "storageLayout",
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IUniswapV2Pair"
+      ]
+    },
+    "/Users/victorlin/Desktop/SimpleSwap/contracts/library/UniswapV2Library.sol": {
+      "lastModificationDate": 1668950102930,
+      "contentHash": "949469d813850183adc07325392db1cd",
+      "sourceName": "contracts/library/UniswapV2Library.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "evmVersion": "berlin",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "storageLayout",
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interface/IUniswapV2Pair.sol",
+        "./SafeMath.sol"
+      ],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "UniswapV2Library"
+      ]
+    },
+    "/Users/victorlin/Desktop/SimpleSwap/contracts/library/SafeMath.sol": {
+      "lastModificationDate": 1668949825746,
+      "contentHash": "814629f38f976c2678ff9817806acd9e",
+      "sourceName": "contracts/library/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "evmVersion": "berlin",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "storageLayout",
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">0.6.6"
+      ],
+      "artifacts": [
+        "SafeMath"
       ]
     }
   }

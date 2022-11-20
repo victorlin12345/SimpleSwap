@@ -3,3 +3,4 @@
 /* eslint-disable */
 import type * as iSimpleSwapSol from "./ISimpleSwap.sol";
 export type { iSimpleSwapSol };
+export type { IUniswapV2Pair } from "./IUniswapV2Pair";

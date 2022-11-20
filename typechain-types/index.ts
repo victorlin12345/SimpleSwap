@@ -16,6 +16,8 @@ export type { ISimpleSwap } from "./contracts/interface/ISimpleSwap.sol/ISimpleS
 export { ISimpleSwap__factory } from "./factories/contracts/interface/ISimpleSwap.sol/ISimpleSwap__factory";
 export type { ISimpleSwapEvent } from "./contracts/interface/ISimpleSwap.sol/ISimpleSwapEvent";
 export { ISimpleSwapEvent__factory } from "./factories/contracts/interface/ISimpleSwap.sol/ISimpleSwapEvent__factory";
+export type { IUniswapV2Pair } from "./contracts/interface/IUniswapV2Pair";
+export { IUniswapV2Pair__factory } from "./factories/contracts/interface/IUniswapV2Pair__factory";
 export type { SimpleSwap } from "./contracts/SimpleSwap";
 export { SimpleSwap__factory } from "./factories/contracts/SimpleSwap__factory";
 export type { TestERC20 } from "./contracts/test/TestERC20";
