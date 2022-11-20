@@ -29,6 +29,7 @@ import type {
 
 export interface SimpleSwapInterface extends utils.Interface {
   functions: {
+    "MINIMUM_LIQUIDITY()": FunctionFragment;
     "addLiquidity(uint256,uint256)": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
@@ -52,6 +53,7 @@ export interface SimpleSwapInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "MINIMUM_LIQUIDITY"
       | "addLiquidity"
       | "allowance"
       | "approve"
@@ -73,6 +75,10 @@ export interface SimpleSwapInterface extends utils.Interface {
       | "transferFrom"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "MINIMUM_LIQUIDITY",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "addLiquidity",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
@@ -137,6 +143,10 @@ export interface SimpleSwapInterface extends utils.Interface {
     ]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "MINIMUM_LIQUIDITY",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "addLiquidity",
     data: BytesLike
@@ -284,6 +294,8 @@ export interface SimpleSwap extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     addLiquidity(
       amountAIn: PromiseOrValue<BigNumberish>,
       amountBIn: PromiseOrValue<BigNumberish>,
@@ -371,6 +383,8 @@ export interface SimpleSwap extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
+
   addLiquidity(
     amountAIn: PromiseOrValue<BigNumberish>,
     amountBIn: PromiseOrValue<BigNumberish>,
@@ -454,6 +468,8 @@ export interface SimpleSwap extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
+
     addLiquidity(
       amountAIn: PromiseOrValue<BigNumberish>,
       amountBIn: PromiseOrValue<BigNumberish>,
@@ -611,6 +627,8 @@ export interface SimpleSwap extends BaseContract {
   };
 
   estimateGas: {
+    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
+
     addLiquidity(
       amountAIn: PromiseOrValue<BigNumberish>,
       amountBIn: PromiseOrValue<BigNumberish>,
@@ -691,6 +709,8 @@ export interface SimpleSwap extends BaseContract {
   };
 
   populateTransaction: {
+    MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     addLiquidity(
       amountAIn: PromiseOrValue<BigNumberish>,
       amountBIn: PromiseOrValue<BigNumberish>,

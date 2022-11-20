@@ -2,13 +2,20 @@
 pragma solidity 0.8.17;
 
 import { ISimpleSwap } from "./interface/ISimpleSwap.sol";
-import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { ERC20, IERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import { UniswapV2Library } from "./library/UniswapV2Library.sol";
+import { Math } from './library/Math.sol';
+import { SafeMath } from './library/SafeMath.sol';
 
 contract SimpleSwap is ISimpleSwap, ERC20 {
-
+    
+    using SafeMath  for uint;
     address public token0;
     address public token1;
+
+    uint256 private reserve0;
+    uint256 private reserve1;
+    uint public constant MINIMUM_LIQUIDITY = 0; // v2-core/contracts/UniswapV2Pair.sol#L15 10**3
     
     constructor(address _tokenA, address _tokenB) ERC20("SimpleSwap", "SSLP") {
         // forces error, when tokenA is not a contract
@@ -37,7 +44,43 @@ contract SimpleSwap is ISimpleSwap, ERC20 {
             uint256 amountB,
             uint256 liquidity
         ){
-            return (0,0,0);
+            // forces error, when tokenA amount is zero
+            require(!(amountAIn == 0), "SimpleSwap: INSUFFICIENT_INPUT_AMOUNT");
+            // forces error, when tokenB amount is zero
+            require(!(amountBIn == 0), "SimpleSwap: INSUFFICIENT_INPUT_AMOUNT");
+
+            // transferFrom(from, to, amount): tokenA, tokenB into this contract
+            IERC20(token0).transferFrom(msg.sender, address(this), amountAIn);
+            IERC20(token1).transferFrom(msg.sender, address(this), amountBIn);
+            
+            uint _totalSupply = totalSupply();
+
+            if (_totalSupply == 0) {
+                liquidity = Math.sqrt(amountAIn.mul(amountBIn)).sub(MINIMUM_LIQUIDITY);
+                amountA = amountAIn;
+                amountB = amountBIn;
+            } else {
+                // ref: https://github.com/Uniswap/v2-core/blob/master/contracts/UniswapV2Pair.sol#L110
+                // 造成池子中多少 % 的變化
+                liquidity = Math.min(amountAIn.mul(_totalSupply) / reserve0, amountBIn.mul(_totalSupply) / reserve1);
+                // 實際上用到的數量
+                amountA = (liquidity * reserve0)/_totalSupply;
+                if (amountAIn > amountA) {
+                    IERC20(token0).transfer(msg.sender, (amountAIn - amountA));
+                } else if (amountBIn > amountB) {
+                    amountB = (liquidity * reserve1)/_totalSupply;
+                     IERC20(token1).transfer(msg.sender, (amountBIn - amountB));
+                }
+            }
+
+             // mint LP token
+             _mint(msg.sender, liquidity);
+
+             emit AddLiquidity(msg.sender, amountA, amountB, liquidity);
+
+             // 更新 reserve0 reserve1
+             reserve0 = IERC20(token0).balanceOf(address(this));
+             reserve1 = IERC20(token1).balanceOf(address(this));
         }
 
     function removeLiquidity(uint256 liquidity) external override returns (uint256 amountA, uint256 amountB){
@@ -45,7 +88,8 @@ contract SimpleSwap is ISimpleSwap, ERC20 {
     }
 
     function getReserves() external override view returns (uint256 reserveA, uint256 reserveB) {
-        return (0,0);
+        reserveA = reserve0;
+        reserveB = reserve1;
     }
 
     function getTokenA() external override view returns (address tokenA){
@@ -54,5 +98,9 @@ contract SimpleSwap is ISimpleSwap, ERC20 {
 
     function getTokenB() external override view returns (address tokenB){
         return token1;
+    }
+
+    function _update() internal {
+
     }
 }
