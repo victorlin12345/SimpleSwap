@@ -9,7 +9,7 @@ import { SafeMath } from './library/SafeMath.sol';
 
 contract SimpleSwap is ISimpleSwap, ERC20 {
     
-    using SafeMath  for uint;
+    using SafeMath  for uint256;
     address public token0;
     address public token1;
 
@@ -34,7 +34,29 @@ contract SimpleSwap is ISimpleSwap, ERC20 {
         address tokenOut,
         uint256 amountIn
     ) external override returns (uint256 amountOut){
-        return 0;
+        // forces error, when tokenIn is not tokenA or tokenB
+        require(tokenIn == token0 || tokenIn == token1, "SimpleSwap: INVALID_TOKEN_IN");
+        // forces error, when tokenOut is not tokenA or tokenB
+        require(tokenOut == token1 || tokenOut == token0, "SimpleSwap: INVALID_TOKEN_OUT");
+        // forces error, when tokenIn is the same as tokenOut
+        require(tokenOut != tokenOut, "SimpleSwap: IDENTICAL_ADDRESS");
+        // forces error, when amountIn is zero
+        require(amountIn != 0, "SimpleSwap: INSUFFICIENT_INPUT_AMOUNT");
+        // ref: https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router01.sol#L179
+        address _token0;
+        address _token1;
+        (_token0, _token1) = UniswapV2Library.sortTokens(tokenIn, tokenOut);
+        
+        IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
+
+        // k = a * b
+        uint k = reserve0.mul(reserve1);
+        uint adjustedReserve1 = k / (reserve0.add(amountIn));
+        amountOut = SafeMath.sub(reserve1, adjustedReserve1);
+
+        IERC20(token1).transfer(msg.sender, amountOut);
+
+        emit Swap(msg.sender, _token0, _token1, amountIn, amountOut);
     }
 
     function addLiquidity(uint256 amountAIn, uint256 amountBIn)
@@ -121,9 +143,5 @@ contract SimpleSwap is ISimpleSwap, ERC20 {
 
     function getTokenB() external override view returns (address tokenB){
         return token1;
-    }
-
-    function _update() internal {
-
     }
 }
