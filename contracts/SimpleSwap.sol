@@ -39,7 +39,7 @@ contract SimpleSwap is ISimpleSwap, ERC20 {
         // forces error, when tokenOut is not tokenA or tokenB
         require(tokenOut == token1 || tokenOut == token0, "SimpleSwap: INVALID_TOKEN_OUT");
         // forces error, when tokenIn is the same as tokenOut
-        require(tokenOut != tokenOut, "SimpleSwap: IDENTICAL_ADDRESS");
+        require(tokenIn != tokenOut, "SimpleSwap: IDENTICAL_ADDRESS");
         // forces error, when amountIn is zero
         require(amountIn != 0, "SimpleSwap: INSUFFICIENT_INPUT_AMOUNT");
         // ref: https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router01.sol#L179
@@ -54,7 +54,13 @@ contract SimpleSwap is ISimpleSwap, ERC20 {
         uint adjustedReserve1 = k / (reserve0.add(amountIn));
         amountOut = SafeMath.sub(reserve1, adjustedReserve1);
 
+        require(amountOut > 0, "SimpleSwap: INSUFFICIENT_OUTPUT_AMOUNT");
+
         IERC20(token1).transfer(msg.sender, amountOut);
+
+        // 更新 reserve0 reserve1
+        reserve0 = IERC20(token0).balanceOf(address(this));
+        reserve1 = IERC20(token1).balanceOf(address(this));
 
         emit Swap(msg.sender, _token0, _token1, amountIn, amountOut);
     }

@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/victorlin/Desktop/SimpleSwap/contracts/SimpleSwap.sol": {
-      "lastModificationDate": 1668966554340,
-      "contentHash": "e4d4c184dded1facc734f444a9353b95",
+      "lastModificationDate": 1668967164040,
+      "contentHash": "6c8c404d3c417bfcff804cb079192249",
       "sourceName": "contracts/SimpleSwap.sol",
       "solcConfig": {
         "version": "0.8.17",
