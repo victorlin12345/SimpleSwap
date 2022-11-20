@@ -76,15 +76,38 @@ contract SimpleSwap is ISimpleSwap, ERC20 {
              // mint LP token
              _mint(msg.sender, liquidity);
 
-             emit AddLiquidity(msg.sender, amountA, amountB, liquidity);
-
              // 更新 reserve0 reserve1
              reserve0 = IERC20(token0).balanceOf(address(this));
              reserve1 = IERC20(token1).balanceOf(address(this));
-        }
 
+             emit AddLiquidity(msg.sender, amountA, amountB, liquidity);
+        }
+  
     function removeLiquidity(uint256 liquidity) external override returns (uint256 amountA, uint256 amountB){
-        return (0,0);
+        // forces error, when lp token amount is zero
+        require(liquidity > 0, "SimpleSwap: INSUFFICIENT_LIQUIDITY_BURNED");
+        
+        _transfer(msg.sender, address(this), liquidity); // send liquidity to pair
+        // burn ref: https://github.com/Uniswap/v2-core/blob/master/contracts/UniswapV2Pair.sol#L134
+        // uint balance0 = IERC20(token0).balanceOf(address(this)); -> reserve0
+        // uint balance1 = IERC20(token1).balanceOf(address(this)); -> reserve1
+        uint _totalSupply = totalSupply();
+
+        amountA = liquidity.mul(reserve0) / _totalSupply; // using balances ensures pro-rata distribution
+        amountB = liquidity.mul(reserve1) / _totalSupply; // using balances ensures pro-rata distribution
+        require(amountA > 0 && amountB > 0, 'UniswapV2: INSUFFICIENT_LIQUIDITY_BURNED');
+
+        // burn LP token
+        _burn(address(this), liquidity);
+
+        IERC20(token0).transfer(msg.sender, amountA);
+        IERC20(token1).transfer(msg.sender, amountB);
+
+        // 更新 reserve0 reserve1
+        reserve0 = IERC20(token0).balanceOf(address(this));
+        reserve1 = IERC20(token1).balanceOf(address(this));
+
+        emit RemoveLiquidity(msg.sender, amountA, amountB, liquidity);
     }
 
     function getReserves() external override view returns (uint256 reserveA, uint256 reserveB) {
